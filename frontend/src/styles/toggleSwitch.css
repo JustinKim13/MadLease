@@ -1,0 +1,68 @@
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px; /* Width of the switch */
+  height: 25px; /* Height of the switch */
+}
+
+.toggle-switch input {
+  opacity: 0; /* Hide the default checkbox */
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #0f0e0e; /* Dark background for dark mode */
+  transition: .4s;
+  border-radius: 25px; /* Adjusted for smaller size */
+  /* Add both moon and sun icons */
+  background-image: url('/images/moon-icon.png'), url('/images/sun-icon.png');
+  background-repeat: no-repeat, no-repeat;
+  background-size: 16px 16px, 16px 16px; /* Size both icons appropriately */
+  background-position: 6px center, 28px center; /* Moon on left, sun on right */
+}
+
+/* This creates the white moon shape on the left side */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 19px; /* Adjusted height of the toggle circle */
+  width: 19px; /* Adjusted width of the toggle circle */
+  left: 3px; /* Adjusted position of the toggle circle */
+  bottom: 3px; /* Adjusted position of the toggle circle */
+  background-color: white; /* Color of the toggle circle */
+  transition: .4s;
+  border-radius: 50%; /* Make it circular */
+  box-shadow: none;
+}
+
+/* When checked (light mode), change background to light color */
+input:checked + .slider {
+  background-color: #f0f0f0; /* Light background for light mode */
+  /* Keep both icons in the same positions */
+  background-image: url('/images/moon-icon.png'), url('/images/sun-icon.png');
+  background-repeat: no-repeat, no-repeat;
+  background-size: 16px 16px, 16px 16px;
+  background-position: 6px center, 28px center;
+}
+
+/* When checked (light mode), move the dark circle to the right */
+input:checked + .slider:before {
+  transform: translateX(25px); /* Move the toggle circle to the right */
+  background-color: #0f0e0e; /* Dark circle for light mode */
+}
+
+/* Simplified moon/sun shapes */
+.slider:before {
+  background: white;
+}
+
+input:checked + .slider:before {
+  background: #0f0e0e;
+} 

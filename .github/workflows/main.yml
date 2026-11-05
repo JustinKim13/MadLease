@@ -1,0 +1,19 @@
+name: Deploy MadLease to Vercel
+
+on:
+  push:
+    branches:
+      - main
+      - preprod
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Prod Deploy
+        if: github.ref == 'refs/heads/main'
+        run: curl -X POST ${{ secrets.VERCEL_PROD_HOOK }}
+
+      - name: Trigger Vercel Preprod Deploy
+        if: github.ref == 'refs/heads/preprod'
+        run: curl -X POST ${{ secrets.VERCEL_PREPROD_HOOK }}

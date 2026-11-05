@@ -1,0 +1,31 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Claude Code Review
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          direct_prompt: |
+            Review this pull request against the conventions in CLAUDE.md. Focus on:
+            - Correctness bugs and edge cases
+            - Security issues (auth checks, input validation, secrets)
+            - Deviations from established patterns in this codebase (MyBatis mappers, controller
+              auth patterns, encryption/versioning conventions)
+            - Anything that would break on deploy (missing env vars, schema changes not reflected
+              anywhere runnable)
+            Post findings as inline review comments. If nothing significant is found, say so briefly
+            instead of inventing nitpicks.

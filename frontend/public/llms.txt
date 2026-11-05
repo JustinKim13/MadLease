@@ -1,0 +1,29 @@
+# MadLease
+
+> MadLease is the sublease and parking marketplace for University of Wisconsin-Madison students. Students can post subleases and parking spots, or search and contact other students directly via encrypted in-app messaging.
+
+MadLease is a free platform built specifically for the UW-Madison community. Listings include apartments, rooms, and parking spots available for short-term or semester-length rentals in Madison, Wisconsin. Users with a `@wisc.edu` email are automatically verified.
+
+## Full site content
+
+- [Complete site content (markdown mirrors of all pages)](https://www.madlease.net/llms-full.txt): Clean markdown version of every public page for AI systems that cannot render JavaScript.
+
+## Core pages
+
+- [Home](https://www.madlease.net/): Landing page and platform overview
+- [Browse Listings](https://www.madlease.net/listings): Searchable marketplace of all active subleases and parking spots
+- [About](https://www.madlease.net/about): Who built MadLease and why
+- [Contact](https://www.madlease.net/contact): Support and contact information
+
+## How it works
+
+1. Create an account with a `@wisc.edu` email or Google sign-in
+2. Post a listing with photos, rental details, and location — or browse existing listings
+3. Filter by price, bedrooms, dates, and amenities; view listings on an interactive map
+4. Connect with other students via end-to-end encrypted in-app messaging
+5. UW-Madison email addresses are automatically verified for trust
+
+## Legal
+
+- [Privacy Policy](https://www.madlease.net/privacy)
+- [Terms of Service](https://www.madlease.net/terms)

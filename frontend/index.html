@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- Preconnect to external origins to speed up first paint -->
+    <link rel="preconnect" href="https://madlease-backend-87f26c5ebdc0.herokuapp.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://d1vwyiwteamcms.cloudfront.net" />
+    <link rel="dns-prefetch" href="https://apis.google.com" />
+
+    <!-- LOGO: update madlease_logo_new.png / madlease_logo_new.png filenames here
+         and update LOGO_FILENAME in middleware.js -->
+    <link rel="icon" type="image/png" href="/madlease_logo_new.png"/>
+    <link rel="apple-touch-icon" href="/madlease_logo_new.png" />
+    <link rel="canonical" href="https://www.madlease.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=overlays-content, viewport-fit=cover" />
+    <meta name="description" content="UW-Madison's marketplace for subleases and parking spots. Post your listing or find your next place in minutes." />
+    <meta name="keywords" content="sublease, UW-Madison, Madison WI, student housing, summer sublease, parking, campus parking, apartment sublet, Madison sublease, university housing, short term rental, UW Madison parking" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#28292c" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="MadLease — Subleases & Parking at UW-Madison" />
+    <meta property="og:description" content="UW-Madison's marketplace for subleases and parking spots. Post your listing or find your next place in minutes." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.madlease.net/" />
+    <meta property="og:image" content="https://www.madlease.net/madlease_logo_new.png" /> <!-- LOGO -->
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:site_name" content="MadLease" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MadLease — Subleases & Parking at UW-Madison" />
+    <meta name="twitter:description" content="UW-Madison's marketplace for subleases and parking spots. Post your listing or find your next place in minutes." />
+    <meta name="twitter:image" content="https://www.madlease.net/madlease_logo_new.png" /> <!-- LOGO -->
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://www.madlease.net/#website",
+          "url": "https://www.madlease.net/",
+          "name": "MadLease",
+          "description": "UW-Madison's marketplace for subleases and parking spots.",
+          "publisher": { "@id": "https://www.madlease.net/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.madlease.net/listings?search={search_term}"
+            },
+            "query-input": "required name=search_term"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://www.madlease.net/#organization",
+          "name": "MadLease",
+          "url": "https://www.madlease.net/",
+          "logo": { "@type": "ImageObject", "url": "https://www.madlease.net/madlease_logo_new.png" },
+          "description": "UW-Madison's sublease and parking marketplace for students.",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer support",
+            "url": "https://www.madlease.net/contact"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <title>MadLease — Subleases & Parking at UW-Madison</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

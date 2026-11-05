@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /messages
+Disallow: /messages/
+Disallow: /profile
+
+# Block AI training crawlers (not search/citation crawlers)
+User-agent: CCBot
+Disallow: /
+
+Sitemap: https://www.madlease.net/sitemap.xml

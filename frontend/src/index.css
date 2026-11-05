@@ -1,0 +1,446 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* Mobile: natural body scroll so iOS Safari's bottom toolbar auto-minimizes
+     and Liquid Glass samples real page content. Desktop overrides below. */
+  height: auto;
+  min-height: 100lvh;
+  width: 100%;
+  background-color: var(--background-color);
+  /* clip (not hidden) — clips overflow without creating a scroll container,
+     so position:sticky still works relative to the body/viewport scroll. */
+  overflow-x: clip;
+}
+
+body {
+  height: auto;
+  min-height: 100lvh;
+  width: 100%;
+  min-width: 320px;
+  /* Prevent iOS rubber-band pulling the page off the navbar. */
+  overscroll-behavior-y: none;
+  overflow-x: clip;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Hide scrollbar on mobile — native body scroll is used but scrollbar should
+   overlay (phones) or be invisible (Playwright / desktop-in-mobile-mode).
+   Second condition catches large phones (iPhone Plus/Max) in landscape where
+   width exceeds 768px but height ~390px reveals it's still a phone. */
+@media (max-width: 768px), (pointer: coarse) and (orientation: landscape) and (max-height: 599px) {
+  html,
+  body {
+    scrollbar-width: none;            /* Firefox */
+    -ms-overflow-style: none;         /* IE / Edge */
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;                    /* Chrome / Safari / Edge */
+  }
+}
+
+/* Hide scrollbar on desktop (except for custom scroll containers) */
+@media (min-width: 769px) {
+  /* Hide scrollbars globally */
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  * {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+
+  /* Show scrollbar for listings scroll container and its children (react-window) */
+  .listings-scroll ::-webkit-scrollbar,
+  .listings-scroll::-webkit-scrollbar {
+    display: block !important;
+    width: 8px !important;
+  }
+
+  .listings-scroll,
+  .listings-scroll * {
+    scrollbar-width: thin !important;
+  }
+
+  /* Show scrollbar for legal scroll containers */
+  .legal-scroll ::-webkit-scrollbar,
+  .legal-scroll::-webkit-scrollbar {
+    display: block !important;
+    width: 8px !important;
+  }
+
+  .legal-scroll,
+  .legal-scroll * {
+    scrollbar-width: thin !important;
+  }
+}
+
+#root {
+  min-height: 100lvh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+}
+
+/* Opt-in: pages that must stay as an app-shell on mobile (Listings, ConversationView) */
+body.mobile-scroll-lock,
+body.mobile-scroll-lock #root {
+  height: 100lvh;
+  overflow: hidden;
+  min-height: 0;
+}
+body.mobile-scroll-lock {
+  position: fixed;
+  inset: 0;
+}
+body.mobile-scroll-lock #root {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal scroll-lock — hook sets inline `top: -${scrollY}px` */
+body.modal-open {
+  position: fixed;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+/* App wrapper: mobile flows naturally with body scroll; desktop app-shell below. */
+.app-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100lvh;
+}
+
+@media (max-width: 768px), (pointer: coarse) and (orientation: landscape) and (max-height: 599px) {
+  .app-shell {
+    /* Push content below the fixed navbar (50px) + status bar safe area */
+    padding-top: calc(env(safe-area-inset-top, 0px) + 50px);
+  }
+}
+
+.app-main {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Desktop: restore the original app-shell exactly as before.
+   Exclusion prevents large phones in landscape (width > 768px but height ~390px)
+   from incorrectly getting the fixed/overflow-hidden desktop shell. */
+@media (min-width: 769px) and (not ((pointer: coarse) and (orientation: landscape) and (max-height: 599px))) {
+  html {
+    height: 100vh;
+    overflow: hidden;
+  }
+  body {
+    height: 100dvh;
+    overflow: hidden;
+    position: fixed;
+  }
+  #root {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    display: block;
+  }
+  .app-shell {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .app-main {
+    flex: 1;
+    overflow: auto;
+    min-height: 0;
+  }
+}
+
+/* Fix for Leaflet marker icons */
+.leaflet-default-icon-path {
+  background-image: url(https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png);
+}
+
+/* Make price/cluster marker hit areas match the visible bubble only */
+.price-bubble,
+.cluster-marker {
+  pointer-events: none !important;
+}
+.price-bubble > div,
+.cluster-marker > div {
+  pointer-events: auto;
+}
+
+:root {
+  /* Badgers colors */
+  --badger-red: #c5050c;
+  --badger-red-light: #f8e9ea;
+  --badger-gray: #494949;
+  --badger-gray-light: #e8e8ea;
+  
+  /* Theme colors - light mode (default) */
+  --background-color: #faf7f1;
+  --text-color: var(--badger-gray);
+  --card-background: #F8F7F5;
+  --nav-background: #F8F7F5;
+  --border-color: #eee;
+  --shadow-color: rgba(0,0,0,0.05);
+  
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: var(--text-color);
+  background-color: var(--background-color);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+  --background-color: #0f0e0e;
+  --text-color: #e0e0e0;
+  --card-background: #1e1e1e;
+  --card-background-alt: #1a1a1a;
+  --nav-background: #1e1e1e;
+  --border-color: #333;
+  --shadow-color: rgba(0,0,0,0.2);
+}
+
+a {
+  font-weight: 500;
+  color: var(--badger-red);
+  text-decoration: inherit;
+}
+a:hover {
+  color: #a30000;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  color: var(--badger-gray);
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--badger-gray-light);
+  cursor: pointer;
+  /* Named properties, not `all`: keeps transitions short and off layout properties */
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+    box-shadow 0.15s ease, transform 0.15s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.15s ease;
+}
+/* Hide the outline for mouse clicks only; keyboard focus keeps a visible ring */
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid var(--badger-red);
+  outline-offset: 2px;
+}
+
+/* Primary button style */
+.btn-primary {
+  background-color: var(--badger-red);
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #a30000;
+  border-color: transparent;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #e8e8ea;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #e8e8ea;
+  }
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--badger-gray);
+  border-radius: 4px;
+}
+
+/* Dark theme scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+
+/* Skeleton loading shimmer */
+@keyframes shimmer {
+  0% { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+[data-theme="dark"] .skeleton {
+  background: linear-gradient(90deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Listing card hover lift — CSS-only so React renders never touch the transform */
+/* Only transition transform (GPU-composited). box-shadow and border-color trigger
+   full repaints on every hover-state change during scroll, causing jank.
+   contain: layout paint isolates each card so its repaints don't cascade to siblings. */
+.listing-card {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  contain: layout paint;
+}
+.listing-card:hover {
+  transform: translateY(-3px);
+}
+[data-theme="dark"] .listing-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4) !important;
+  border-color: #332f2d !important;
+}
+:root:not([data-theme="dark"]) .listing-card:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08), 0 12px 28px -6px rgba(40,30,15,0.18) !important;
+  border-color: rgba(0,0,0,0.22) !important;
+}
+
+/* Map unit/spot preview row — CSS-only hover so the tint applies without a React re-render */
+.map-preview-row {
+  transition: background-color 0.15s ease;
+}
+.map-preview-row:hover {
+  background-color: rgba(127,127,127,0.08);
+}
+
+.how-it-works-tile {
+  transition: transform 0.2s ease, border-color 0.2s, box-shadow 0.2s;
+}
+.how-it-works-tile:hover {
+  border-color: #d0d0d0 !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.how-it-works-tile--dark:hover {
+  border-color: #3a3633 !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+
+
+.form-page-title {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .form-page-title {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+}
+
+.profile-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.profile-tab-content {
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.profile-tab-content::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .profile-tab-content {
+    scrollbar-width: thin !important;
+    scrollbar-color: #3a3633 transparent !important;
+  }
+  .profile-tab-content::-webkit-scrollbar {
+    display: block !important;
+    width: 5px !important;
+  }
+  .profile-tab-content::-webkit-scrollbar-track {
+    background: transparent !important;
+    margin-bottom: 2rem !important;
+  }
+  .profile-tab-content::-webkit-scrollbar-thumb {
+    background-color: #3a3633 !important;
+    border-radius: 999px !important;
+  }
+}
+
+.profile-listing-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.profile-listing-card:hover {
+  transform: translateY(-2px);
+  border-color: #3a3633 !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35) !important;
+}
+
+/* Listing details: gallery arrows, Save/Share, amenity chips. Inline styles set these
+   properties, so hover states use !important, and presses use `scale` (transform is inline). */
+.gallery-arrow { transition: background-color 0.2s ease, scale 0.15s cubic-bezier(0.22, 1, 0.36, 1); }
+@media (hover: hover) { .gallery-arrow:hover { background-color: rgba(0,0,0,0.55) !important; } }
+.gallery-arrow:active { scale: 0.92; }
+.detail-action { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, scale 0.15s cubic-bezier(0.22, 1, 0.36, 1); }
+.detail-action:hover { border-color: rgba(127,127,127,0.6) !important; }
+.detail-action[aria-pressed="true"]:hover { border-color: #a30000 !important; }
+.detail-action:active { scale: 0.97; }
+.amenity-chip { transition: border-color 0.15s ease, background-color 0.15s ease; }
+.amenity-chip:hover { border-color: rgba(127,127,127,0.5) !important; }
+
+/* Reduced motion: keep state changes (colour, opacity) but drop movement, looping
+   shimmers and long transitions for users who ask the OS for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .listing-card:hover,
+  .listing-card:active {
+    transform: none !important;
+  }
+}
+
